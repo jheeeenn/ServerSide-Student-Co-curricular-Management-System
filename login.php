@@ -33,10 +33,12 @@
                     $_SESSION['user_id'] = $user['user_id'];
                     $_SESSION['user_name'] = $user['name'];
                     $_SESSION['user_email'] = $user['email'];
+                    
+                    $_SESSION['is_admin'] = $user['is_admin']; // Store admin status in session, 0 or 1
 
                     // set cookie for "Remember Me" functionality
                     if(isset($_POST['remember_email'])) {
-                        setcookie('remembered_email', $email, time() + (30 * 24 * 60 * 60)); //  30 days
+                        setcookie('remembered_email', $email, time() + (30 * 24 * 60 * 60), "/"); //  30 days
                     } else {
                         setcookie('remembered_email', '', time() - 3600); // Delete the cookie
                     }

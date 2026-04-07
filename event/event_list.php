@@ -9,22 +9,128 @@ $show_cookie_notice = false;
 
 $user_id = $_SESSION['user_id'];
 
-$query = "SELECT * FROM events WHERE user_id='$user_id' ORDER BY event_date DESC";
+
+$status_message = "";
+$status_type = "";
+if (isset($_GET['status'])) {
+    if ($_GET['status'] == "added") {
+        $status_message = "Event added successfully.";
+        $status_type = "success";
+    } elseif ($_GET['status'] == "updated") {
+        $status_message = "Event updated successfully.";
+        $status_type = "success";
+    } elseif ($_GET['status'] == "deleted") {
+        $status_message = "Event deleted successfully.";
+        $status_type = "success";
+    } elseif ($_GET['status'] == "delete_error") {
+        $status_message = "Unable to delete event. Please try again.";
+        $status_type = "error";
+    }
+    elseif ($_GET['status'] == "update_error") {
+        $status_message = "Unable to update event. Please try again.";
+        $status_type = "error";
+    }
+}
+
+// flters
+$search = "";
+$filter_type = "";
+$sort_order = "DESC";
+
+if(isset($_GET['search'])) {
+    $search = mysqli_real_escape_string($con, trim($_GET['search']));
+}
+if(isset($_GET['filter_type'])) {
+    $filter_type = mysqli_real_escape_string($con, trim($_GET['filter_type']));
+}
+if(isset($_GET['sort_order'])) {
+    $sort_order = mysqli_real_escape_string($con, trim($_GET['sort_order']));
+}
+
+// build the query 
+$query = "SELECT * FROM events WHERE user_id='$user_id'";
+if(!empty($search)) {
+    $query .= " AND event_title LIKE '%$search%'";
+}
+if(!empty($filter_type)) {
+    $query .= " AND event_type = '$filter_type'";
+}
+
+$query .= " ORDER BY event_date $sort_order";
+
 $result = mysqli_query($con, $query);
+
+//$query = "SELECT * FROM events WHERE user_id='$user_id' ORDER BY event_date DESC";
+//$result = mysqli_query($con, $query);
 
 include("../partials/header.php");
 include("../partials/navbar.php");
 ?>
     <div class="container">
-            <div class="header-box">
+        <div class="header-box">
                 <h2>Events Tracker Module</h2>
                 <p>View and manage your events and participation records.</p>
 
             </div>
+            <!-- Status message -->
+                <?php if(!empty($status_message)) { ?>
+                    <div class="message <?php echo $status_type; ?>">
+                        <?php echo $status_message; ?>
+                    </div>
+                <?php } ?>
 
             <div class="top-actions">
                 <a href="../dashboard.php" class="btn btn-back">Back to Dashboard</a>
                 <a href="event_add.php" class="btn btn-add">Add New Event</a>
+            </div>
+
+            <!-- Filters -->
+            <div class = "filter-box">
+                <form method="GET" action="event_list.php" class="filter-form">
+                     <div class="form-group group-search">
+                        <label for="search">Search Event Title</label>
+                        <input type="text" name="search" id="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Enter event title">
+                    </div>
+                    
+                    <div class="form-group group-type">
+                        <label for="filter_type">Filter by Event Type</label>
+                        <select name="filter_type" id="filter_type">
+
+                        <option value="">-- All Types --</option>
+                        <option value="Workshop" <?php if ($filter_type == "Workshop") 
+                            echo "selected"; ?>>Workshop</option>
+                        <option value="Competition" <?php if ($filter_type == "Competition") 
+                            echo "selected"; ?>>Competition</option>
+                        <option value="Talk" <?php if ($filter_type == "Talk") 
+                            echo "selected"; ?>>Talk</option>
+                        <option value="Seminar" <?php if ($filter_type == "Seminar") 
+                            echo "selected"; ?>>Seminar</option>
+                        <option value="University Event" <?php if ($filter_type == "University Event") 
+                            echo "selected"; ?>>University Event</option>
+                        <option value="Other" <?php if ($filter_type == "Other") 
+                            echo "selected"; ?>>Other</option>
+                
+                        </select>
+                    </div>
+
+                    <div class="form-group group-sort">
+                         <label for="sort_order">Sort by Date</label>
+                        <select name="sort_order" id="sort_order">
+                            <option value="DESC" <?php if ($sort_order == "DESC") 
+                                echo "selected"; ?>>Newest to Oldest</option>
+                            <option value="ASC" <?php if ($sort_order == "ASC") 
+                                echo "selected"; ?>>Oldest to Newest</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group group-btn">
+                        <button type="submit" class="btn btn-filter">Apply</button>
+                    </div>
+                    <div class = "form-group group-btn">
+                        <a href="event_list.php" class="btn btn-reset">Clear Filters</a>
+
+                    </div>
+                </form>
             </div>
 
             <div class = 'table-box'>

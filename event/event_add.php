@@ -34,7 +34,7 @@ if(isset($_POST['submit'])) {
                   VALUES ('$user_id', '$event_title', '$event_type', '$organizer', '$event_date', '$location', '$description')";
 
         if(mysqli_query($con, $query)) {
-            header("Location: event_list.php");
+            header("Location: event_list.php?status=added");
             exit();
         } else {
             $message = "Error adding event. Please try again.";

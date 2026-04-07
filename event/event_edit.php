@@ -14,7 +14,7 @@ $user_id = $_SESSION['user_id'];
 
 // Redirect back to list if no event_id provided
 if(!isset($_GET['event_id'])) {
-    header("Location: event_list.php");
+    header("Location: event_list.php?status=update_error");
     exit();
 }
 
@@ -25,7 +25,7 @@ $select_result = mysqli_query($con, $select_query);
 
 // If event not found or does not belong to user, redirect back to list
 if(mysqli_num_rows($select_result) != 1) {
-    header("Location: event_list.php");
+    header("Location: event_list.php?status=update_error");
     exit();
 }
 
@@ -59,7 +59,7 @@ if(isset($_POST['submit'])) {
                          WHERE event_id='$event_id' AND user_id='$user_id'";
 
         if(mysqli_query($con, $update_query)) {
-            header("Location: event_list.php");
+            header("Location: event_list.php?status=updated");
             exit();
         } else {
             $message = "Error updating event. Please try again.";
@@ -115,11 +115,11 @@ include("../partials/navbar.php");
                     <label for="description">Description:</label>
                     <textarea id="description" name="description" rows = "5"><?php echo htmlspecialchars($description); ?></textarea>
 
-                    <input type="submit" name="submit" value="Add Event">
+                    <input type="submit" name="submit" value="Update Event">
             </form>
 
         </div>
-        </div>
+
 
 </body>
 </html>

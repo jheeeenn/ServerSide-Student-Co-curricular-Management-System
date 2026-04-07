@@ -151,7 +151,7 @@ if(isset($_POST['register'])) {
 </head>
 
 <body>
-    <div class="contianter">
+    <div class="container">
         <div class="card">
     <h2>User Registration</h2>
 

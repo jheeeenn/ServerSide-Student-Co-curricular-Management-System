@@ -23,22 +23,22 @@ include("partials/navbar.php");
             <div class="module-card">
                 <h3>Event Tracker Module</h3>
                 <p>Manage your programmes, talks, workshops, and other events.</p>
-                <a href="event/event_list.php">Open Module</a>
+                <a href="event/event_list.php">Open Events ></a>
             </div>
             <div class="module-card">
                 <h3>Club Tracker Module</h3>
                 <p>Manage your club memberships, activities, and communications.</p>
-                <a href="club/club_list.php">Open Module</a>
+                <a href="club/club_list.php">Open Clubs ></a>
             </div>
             <div class="module-card">
                 <h3>Merit Tracker Module</h3>
                 <p>Manage your merit points, co-co contribution hours, and service activities.</p>
-                <a href="merit/merit_list.php">Open Module</a>
+                <a href="merit/merit_list.php">Open Merit tab ></a>
             </div>
             <div class="module-card">
                 <h3>Achievements Tracker Module</h3>
                 <p>Manage your achievements, awards, and recognition.</p>
-                <a href="achievement/achievement_list.php">Open Module</a>
+                <a href="achievement/achievement_list.php">Open Achievements tab ></a>
             </div>
         </div>
 
