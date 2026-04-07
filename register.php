@@ -43,12 +43,17 @@ if(isset($_POST['register'])) {
             VALUES ('$name', '$email', '$hashed_password')";
 
             if(mysqli_query($con, $insert_query)) {
-                $message = "Registration successful. You can now log in.";
-                //header("Location: login.php");
-                //exit();
+                $new_user_id = mysqli_insert_id($con);
+
+                $_SESSION['user_id'] = $new_user_id;
+                $_SESSION['user_name'] = $name;
+                $_SESSION['user_email'] = $email;
+                $_SESSION['is_admin'] = 0;
+
+                $message = "Registration successful. Redirecting to dashboard...";
                 $message_type = "success";
-                $name = "";
-                $email = "";
+
+                header("refresh:3;url=dashboard.php");
             } else {
                 $message = "Registration failed: " . mysqli_error($con);
                 $message_type = "error";

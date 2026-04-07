@@ -14,7 +14,7 @@ include("partials/navbar.php");
         <div class="header-box">
                 <h2>Dashboard</h2>
 
-                <p>Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?>!</p>
+                <p>Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?>   ^-^</p>
                 
                         
         </div>
