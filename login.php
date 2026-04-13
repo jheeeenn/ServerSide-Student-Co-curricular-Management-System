@@ -5,9 +5,14 @@
     $message = "";
     $message_type = "";
     $email = "";
-
+    
     if(isset($_COOKIE['remembered_email'])) {
         $email = $_COOKIE['remembered_email'];
+    }
+
+    if (isset($_GET['status']) && $_GET['status'] == "reset_success") {
+        $message = "Password reset successful. Please log in with your new password.";
+        $message_type = "success";
     }
 
     if(isset($_POST['login'])) {
@@ -181,6 +186,8 @@
             </form>
 
             <p>Don't have an account? <a href="register.php">Register here</a>.</p>
+
+            <p><a href="forgot_password.php">Forgot Password?</a></p>
 
         </div>
     </div>

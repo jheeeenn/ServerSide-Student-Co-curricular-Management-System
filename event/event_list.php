@@ -166,10 +166,18 @@ include("../partials/navbar.php");
                                         Edit
                                     </a>
 
-                                    <a class="action-link delete-link" href="event_delete.php?event_id=
-                                        <?php echo $row['event_id']; ?>" 
-                                        onclick="return confirm('Are you sure you want to delete this event record?')">
-                                        Delete</a>
+                                       <a
+                                        href="#"
+                                        class="action-link delete-link open-event-delete-modal"
+                                        data-id="<?php echo $row['event_id']; ?>"
+                                        data-title="<?php echo htmlspecialchars($row['event_title']); ?>"
+                                        data-type="<?php echo htmlspecialchars($row['event_type']); ?>"
+                                        data-organizer="<?php echo htmlspecialchars($row['organizer']); ?>"
+                                        data-date="<?php echo htmlspecialchars($row['event_date']); ?>"
+                                        data-location="<?php echo htmlspecialchars($row['location']); ?>"
+                                    >
+                                        Delete
+                                    </a>
                                     </td>
                                 </tr>
                             <?php $count++;
@@ -187,5 +195,90 @@ include("../partials/navbar.php");
 
             </div>
         </div>
+
+        <div id="deleteEventModal" class="delete-modal-overlay">
+    <div class="delete-modal-box">
+        <div class="delete-modal-header">
+            <div class="delete-modal-header-text">
+                <h3>Delete Event Record</h3>
+                <p>Please review the event details before deleting it.</p>
+            </div>
+        </div>
+
+        <div class="delete-modal-warning">
+            This action cannot be undone.
+        </div>
+
+        <div class="delete-modal-info">
+            <div class="delete-modal-info-row">
+                <span class="delete-modal-info-label">Title:</span>
+                <span class="delete-modal-info-value" id="deleteEventTitle"></span>
+            </div>
+            <div class="delete-modal-info-row">
+                <span class="delete-modal-info-label">Type:</span>
+                <span class="delete-modal-info-value" id="deleteEventType"></span>
+            </div>
+            <div class="delete-modal-info-row">
+                <span class="delete-modal-info-label">Organizer:</span>
+                <span class="delete-modal-info-value" id="deleteEventOrganizer"></span>
+            </div>
+            <div class="delete-modal-info-row">
+                <span class="delete-modal-info-label">Date:</span>
+                <span class="delete-modal-info-value" id="deleteEventDate"></span>
+            </div>
+            <div class="delete-modal-info-row">
+                <span class="delete-modal-info-label">Location:</span>
+                <span class="delete-modal-info-value" id="deleteEventLocation"></span>
+            </div>
+        </div>
+
+        <div class="delete-modal-actions">
+            <button type="button" class="delete-modal-btn delete-modal-btn-cancel" id="cancelDeleteEvent">Cancel</button>
+            <a href="#" class="delete-modal-btn delete-modal-btn-confirm" id="confirmDeleteEvent">Confirm Delete</a>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("deleteEventModal");
+    const buttons = document.querySelectorAll(".open-event-delete-modal");
+    const cancelBtn = document.getElementById("cancelDeleteEvent");
+    const confirmBtn = document.getElementById("confirmDeleteEvent");
+
+    const titleSpan = document.getElementById("deleteEventTitle");
+    const typeSpan = document.getElementById("deleteEventType");
+    const organizerSpan = document.getElementById("deleteEventOrganizer");
+    const dateSpan = document.getElementById("deleteEventDate");
+    const locationSpan = document.getElementById("deleteEventLocation");
+
+    buttons.forEach(button => {
+        button.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const eventId = this.getAttribute("data-id");
+            titleSpan.textContent = this.getAttribute("data-title");
+            typeSpan.textContent = this.getAttribute("data-type");
+            organizerSpan.textContent = this.getAttribute("data-organizer");
+            dateSpan.textContent = this.getAttribute("data-date");
+            locationSpan.textContent = this.getAttribute("data-location");
+
+            confirmBtn.href = "event_delete.php?event_id=" + eventId;
+            modal.classList.add("show");
+        });
+    });
+
+    cancelBtn.addEventListener("click", function () {
+        modal.classList.remove("show");
+    });
+
+    modal.addEventListener("click", function (e) {
+        if (e.target === modal) {
+            modal.classList.remove("show");
+        }
+    });
+});
+</script>
+
     </body>
 </html>

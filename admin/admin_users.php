@@ -38,12 +38,18 @@ $query = "
         users.created_at,
         users.is_admin,
 
-        -- Total Events
         (SELECT COUNT(*) 
          FROM events e 
          WHERE e.user_id = users.user_id) AS total_events,
 
-        -- Total Achievements
+        (SELECT COUNT(*) 
+         FROM clubs c 
+         WHERE c.user_id = users.user_id) AS total_clubs,
+
+        (SELECT COUNT(*) 
+         FROM merits m 
+         WHERE m.user_id = users.user_id) AS total_merits,
+
         (SELECT COUNT(*) 
          FROM achievements a 
          WHERE a.user_id = users.user_id) AS total_achievements
@@ -51,7 +57,6 @@ $query = "
     FROM users
     ORDER BY users.user_id ASC
 ";
-
 
 $result = mysqli_query($con, $query);
 
@@ -94,8 +99,8 @@ include("../partials/navbar.php");
                             <td><?php echo htmlspecialchars($row['email']); ?></td>
                             <td><?php echo ($row['is_admin'] == 1) ? "Admin" : "User"; ?></td>
                             <td><?php echo htmlspecialchars($row['total_events']); ?></td>
-                            <td>0</td>
-                            <td>0</td>
+                            <td><?php echo htmlspecialchars($row['total_clubs']); ?></td>
+                            <td><?php echo htmlspecialchars($row['total_merits']); ?></td>
                             <td><?php echo htmlspecialchars($row['total_achievements']); ?></td>
                             <td><?php echo htmlspecialchars($row['created_at']); ?></td>
                         </tr>
