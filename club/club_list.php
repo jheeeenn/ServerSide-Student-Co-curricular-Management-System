@@ -72,122 +72,198 @@ $query .= " ORDER BY join_date $sort_order";
 $result = mysqli_query($con, $query);
 
 include("../partials/header.php");
+$current_page = "club";
 include("../partials/navbar.php");
 ?>
 
-<div style="position: absolute; top: 18px; right: 30px; z-index: 9999;">
-    <form method="POST" style="margin: 0;">
-        <button type="submit" name="toggle_theme" class="btn" style="background-color: #343a40; color: white; border: 1px solid #fff;">Toggle Theme</button>
-    </form>
-</div>
+<div class="container module-shell club-shell">
 
-<style>
-    .header-box, .filter-box, .table-box, .page-box {
-        background-color: #ffffff !important;
-    }
+    <?php
+        $total_clubs = 0;
+        $leadership_count = 0;
+        $member_count = 0;
+        $latest_join_date = "-";
 
-    <?php if ($theme == 'dark') { ?>
-    body { background-image: none !important; background-color: #121212 !important; }
-    .header-box, .filter-box, .table-box, .page-box { background-color: #1e1e1e !important; color: #ffffff !important; border: 1px solid #333 !important; }
-    h1, h2, h3, h4, label, th, td, p { color: #ffffff !important; }
-    th { background-color: #333333 !important; }
-    input, select, textarea { background-color: #333333 !important; color: #ffffff !important; border: 1px solid #555 !important; }
-    .glow-text { color: #e0e0e0 !important; text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.5); }
-    <?php } ?>
-</style>
+        $stats_query = "SELECT role, join_date FROM clubs WHERE user_id='$user_id' ORDER BY join_date DESC";
+        $stats_result = mysqli_query($con, $stats_query);
 
-<div class="container">
-    <div class="header-box">
-        <h2 style="margin-top: 0;">Club Tracker Module</h2>
-        <p>Manage and track your club memberships and roles.</p>
-        <div style="clear: both;"></div>
-    </div>
-        
+        if ($stats_result && mysqli_num_rows($stats_result) > 0) {
+            while ($stats_row = mysqli_fetch_assoc($stats_result)) {
+                $total_clubs++;
+
+                $role_lower = strtolower($stats_row['role']);
+                if (
+                    strpos($role_lower, 'president') !== false ||
+                    strpos($role_lower, 'vice') !== false ||
+                    strpos($role_lower, 'secretary') !== false ||
+                    strpos($role_lower, 'treasurer') !== false ||
+                    strpos($role_lower, 'director') !== false ||
+                    strpos($role_lower, 'chairman') !== false ||
+                    strpos($role_lower, 'head') !== false ||
+                    strpos($role_lower, 'manager') !== false ||
+                    strpos($role_lower, 'coordinator') !== false ||
+                    strpos($role_lower, 'captain') !== false
+                ) {
+                    $leadership_count++;
+                } else {
+                    $member_count++;
+                }
+
+                if ($latest_join_date === "-") {
+                    $latest_join_date = $stats_row['join_date'];
+                }
+            }
+        }
+    ?>
+
+    <section class="module-hero module-hero-club">
+        <div class="module-hero-main">
+            <div class="module-hero-icon club-accent-soft">👥</div>
+            <div class="module-hero-text-wrap">
+                <h2>Club Tracker</h2>
+                <p>Manage your club memberships, leadership roles, and participation history.</p>
+            </div>
+        </div>
+
+        <div class="module-hero-actions">
+            <a href="club_timeline.php" class="module-btn module-btn-ghost">View Timeline</a>
+            <a href="club_add.php" class="module-btn module-btn-primary club-accent-btn">+ Add Club</a>
+        </div>
+    </section>
+
     <?php if(!empty($status_message)) { ?>
-        <div class="message <?php echo $status_type; ?>">
+        <div class="message <?php echo $status_type; ?> module-status-message">
             <?php echo $status_message; ?>
         </div>
     <?php } ?>
 
-    <div class="top-actions" style="overflow: auto; margin-bottom: 20px;">
-        <div style="float: left;">
-            <a href="../dashboard.php" class="btn btn-back">Back to Dashboard</a>
-        </div>
-        <div style="float: right;">
-            <a href="club_timeline.php" class="btn btn-filter" style="background-color: #17a2b8; color: white;">View Timeline</a>
-            <a href="club_add.php" class="btn btn-add">Add New Club</a>
-        </div>
-    </div>
-
-    <div class="filter-box">
-        <form method="GET" action="club_list.php" class="filter-form">
-            <div class="form-group group-search">
-                <label for="search">Search Club Name</label>
-                <input type="text" name="search" id="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Enter club name">
+    <section class="module-stats-grid">
+        <div class="module-stat-card">
+            <div class="module-stat-icon club-accent-soft">🏛️</div>
+            <div>
+                <h3><?php echo $total_clubs; ?></h3>
+                <p>Total Clubs</p>
             </div>
-                
-            <div class="form-group group-type">
-                <label for="filter_type">Filter by Role Type</label>
-                <select name="filter_type" id="filter_type">
-                    <option value="">-- All Roles --</option>
+        </div>
+
+        <div class="module-stat-card">
+            <div class="module-stat-icon club-accent-soft">⭐</div>
+            <div>
+                <h3><?php echo $leadership_count; ?></h3>
+                <p>Leadership Roles</p>
+            </div>
+        </div>
+
+        <div class="module-stat-card">
+            <div class="module-stat-icon club-accent-soft">👤</div>
+            <div>
+                <h3><?php echo $member_count; ?></h3>
+                <p>Member Roles</p>
+            </div>
+        </div>
+
+        <div class="module-stat-card">
+            <div class="module-stat-icon club-accent-soft">📅</div>
+            <div>
+                <h3><?php echo htmlspecialchars($latest_join_date); ?></h3>
+                <p>Latest Join Date</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="module-filter-card">
+        <form method="GET" action="club_list.php" class="module-filter-form">
+            <div class="module-filter-full">
+                <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Search club name...">
+            </div>
+
+            <div>
+                <select name="filter_type">
+                    <option value="">All Roles</option>
                     <option value="leader" <?php if ($filter_type == "leader") echo "selected"; ?>>Leadership</option>
                     <option value="member" <?php if ($filter_type == "member") echo "selected"; ?>>Member</option>
                 </select>
             </div>
 
-            <div class="form-group group-sort">
-                <label for="sort_order">Sort by Date</label>
-                <select name="sort_order" id="sort_order">
+            <div>
+                <select name="sort_order">
                     <option value="DESC" <?php if ($sort_order == "DESC") echo "selected"; ?>>Newest to Oldest</option>
                     <option value="ASC" <?php if ($sort_order == "ASC") echo "selected"; ?>>Oldest to Newest</option>
                 </select>
             </div>
 
-            <div class="form-group group-btn">
-                <button type="submit" class="btn btn-filter">Apply</button>
-            </div>
-            <div class="form-group group-btn">
-                <a href="club_list.php" class="btn btn-reset">Clear Filters</a>
+            <div class="module-filter-actions">
+                <button type="submit" class="module-btn module-btn-primary club-accent-btn">Filter</button>
+                <a href="club_list.php" class="module-btn module-btn-secondary">Reset</a>
             </div>
         </form>
-    </div>
+    </section>
 
-    <div class="table-box">
+    <section class="module-content-card">
         <?php if(mysqli_num_rows($result) > 0) { ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Club Name</th>
-                        <th>Role</th>
-                        <th>Date Joined</th>
-                        <th>Description</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php 
-                    $count = 1;
-                    while($row = mysqli_fetch_assoc($result)) { ?>
+            <div class="module-table-wrap">
+                <table class="module-table">
+                    <thead>
                         <tr>
-                            <td><?php echo $count; ?></td>
-                            <td><?php echo htmlspecialchars($row['club_name']); ?></td>
-                            <td><?php echo htmlspecialchars($row['role']); ?></td>
-                            <td><?php echo htmlspecialchars($row['join_date']); ?></td>
-                            <td class="glow-text"><?php echo htmlspecialchars($row['description']); ?></td>
-                            <td>
-                                <a class="action-link edit-link" href="club_edit.php?club_id=<?php echo $row['club_id']; ?>">Edit</a>
-                                <a class="action-link" href="club_role_update.php?club_id=<?php echo $row['club_id']; ?>" style="color: #17a2b8; text-decoration: none; margin-right: 10px; font-weight: bold;">Promote</a>
-                                <a class="action-link delete-link" href="club_delete.php?club_id=<?php echo $row['club_id']; ?>" onclick="return confirm('Are you sure you want to delete this club record?')">Delete</a>
-                            </td>
+                            <th>No.</th>
+                            <th>Club Name</th>
+                            <th>Role</th>
+                            <th>Date Joined</th>
+                            <th>Description</th>
+                            <th>Actions</th>
                         </tr>
-                    <?php $count++; } ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        $count = 1;
+                        while($row = mysqli_fetch_assoc($result)) {
+
+                            $role_lower = strtolower($row['role']);
+                            $role_class = (
+                                strpos($role_lower, 'president') !== false ||
+                                strpos($role_lower, 'vice') !== false ||
+                                strpos($role_lower, 'secretary') !== false ||
+                                strpos($role_lower, 'treasurer') !== false ||
+                                strpos($role_lower, 'director') !== false ||
+                                strpos($role_lower, 'chairman') !== false ||
+                                strpos($role_lower, 'head') !== false ||
+                                strpos($role_lower, 'manager') !== false ||
+                                strpos($role_lower, 'coordinator') !== false ||
+                                strpos($role_lower, 'captain') !== false
+                            ) ? 'club-role-leadership' : 'club-role-member';
+                        ?>
+                            <tr>
+                                <td><?php echo $count; ?></td>
+                                <td class="module-title-cell"><?php echo htmlspecialchars($row['club_name']); ?></td>
+                                <td>
+                                    <span class="club-inline-pill <?php echo $role_class; ?>">
+                                        <?php echo htmlspecialchars($row['role']); ?>
+                                    </span>
+                                </td>
+                                <td><?php echo htmlspecialchars($row['join_date']); ?></td>
+                                <td class="module-description-cell"><?php echo htmlspecialchars($row['description']); ?></td>
+                                <td>
+                                    <div class="module-action-links">
+                                        <a class="module-action-link module-action-edit" href="club_edit.php?club_id=<?php echo $row['club_id']; ?>">Edit</a>
+                                        <a class="module-action-link module-action-generate-merit" href="../merit/merit_add.php?club_id=<?php echo $row['club_id']; ?>">Generate Merit</a>
+                                        <a class="module-action-link club-action-promote" href="club_role_update.php?club_id=<?php echo $row['club_id']; ?>">Promote</a>
+                                        <a class="module-action-link module-action-delete" href="club_delete.php?club_id=<?php echo $row['club_id']; ?>">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php $count++; } ?>
+                    </tbody>
+                </table>
+            </div>
         <?php } else { ?>
-            <div class="empty-message">You have not registered any clubs here. Start by adding new clubs.</div>
+            <div class="module-empty-state">
+                <div class="module-empty-icon club-accent-text">👥</div>
+                <h3>No clubs found</h3>
+                <p>Start by adding your first club membership record.</p>
+                <a href="club_add.php" class="module-btn module-btn-primary club-accent-btn">Add Club</a>
+            </div>
         <?php } ?>
-    </div>
+    </section>
 </div>
 </body>
 </html>

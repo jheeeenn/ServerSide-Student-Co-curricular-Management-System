@@ -7,7 +7,7 @@ if (!isset($base_path)) {
 
 // Set default page title and subtitle if not already set
 if (!isset($page_title)) {
-    $page_title = "Student Co-curricular Management System";
+    $page_title = "JX Student CoCo Hub";
 }
 if (!isset($page_subtitle)) {
     $page_subtitle = "";
@@ -19,7 +19,7 @@ if (!isset($page_subtitle)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($page_title); ?></title>
+    <title>JX Student CoCo Hub</title>
 
     <!-- Link to the external css -->
     <link rel="stylesheet" href="<?php echo $base_path; ?>assets/style.css">
@@ -34,9 +34,11 @@ if (!isset($page_subtitle)) {
     </div>
 <?php } ?>
 
+<?php if (empty($hide_topbar)) { ?>
 <div class="topbar">
     <h1><?php echo htmlspecialchars($page_title); ?></h1>
     <?php if (!empty($page_subtitle)) { ?>
         <p><?php echo htmlspecialchars($page_subtitle); ?></p>
     <?php } ?>
 </div>
+<?php } ?>

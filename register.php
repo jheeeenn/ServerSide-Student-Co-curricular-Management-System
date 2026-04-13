@@ -70,122 +70,68 @@ if(isset($_POST['register'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #c7dcfb;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container{
-            width : 100%;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .card{
-            background-color: #fff;
-            width: 400px;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-
-        }
-
-        h2{
-            margin-top: 0;
-            text-align: center;
-            color: #333;
-        }
-        .message{
-            padding: 12px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        .error {
-            background-color: #f58d96;
-            color: #b30000;
-            border: 1px solid #ffb3b3;
-        }
-        .success {
-            background-color: #c8e6c9;
-            color: #2e7d32;
-            border: 1px solid #2e7d32;
-        }
-
-        label{
-            font-weight: bold;
-            color: #333333;
-        }
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 14px;
-        }
-        input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-
-    
-    </style>
+    <title>Register | JX Student CoCo Hub</title>
+    <link rel="stylesheet" href="assets/style.css">
 </head>
-
 <body>
-    <div class="container">
-        <div class="card">
-    <h2>User Registration</h2>
 
-    <?php if(!empty($message)) {?>
-        <div class="message <?php echo $message_type; ?>">
-            <?php echo $message; ?>
-        </div>
-    <?php } ?>
+<div class="auth-page">
+<section class="auth-hero auth-hero-register-simple">
+    <div class="auth-bg-orb auth-bg-orb-two"></div>
+    <div class="auth-bg-glass auth-bg-glass-two"></div>
 
-    <form method="POST" action="">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" value = "<?php echo htmlspecialchars($name); ?>"><br><br>
+    <div class="auth-hero-content auth-hero-content-simple">
+        <div class="auth-brand-mark dark-brand">JX Student CoCo Hub</div>
 
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" value = "<?php echo htmlspecialchars($email); ?>"><br><br>
+        <h1 class="auth-register-title">Student Co-Curricular Management System</h1>
 
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br><br>
-
-        <label for="confirm_password">Confirm Password:</label><br>
-        <input type="password" id="confirm_password" name="confirm_password"><br><br>
-
-        <input type="submit" name="register" value="Register">
-    </form>
-
-    <br>
-    <br>
-    <p>Already have an account? <a href="login.php">Login here</a>.</p>
-        </div>
+        <p class="auth-register-lead">
+            Create your account here and start managing your co-curricular records in one place.
+        </p>
     </div>
+</section>
+
+    <section class="auth-panel-wrap">
+        <div class="auth-panel">
+            <h2>Create account</h2>
+            <p class="auth-panel-subtext">Register to access your personal co-curricular management workspace.</p>
+
+            <?php if (!empty($message)) { ?>
+                <div class="auth-message <?php echo $message_type; ?>">
+                    <?php echo $message; ?>
+                </div>
+            <?php } ?>
+
+            <form method="POST" action="" class="auth-form">
+                <div class="field-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($name); ?>" required>
+                </div>
+
+                <div class="field-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required>
+                </div>
+
+                <div class="field-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <div class="field-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required>
+                </div>
+
+                <button type="submit" name="register" class="auth-submit secondary">Create Account</button>
+            </form>
+
+            <div class="auth-links">
+                <p>Already have an account? <a href="login.php">Login here</a></p>
+            </div>
+        </div>
+    </section>
+</div>
+
 </body>
 </html>

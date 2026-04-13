@@ -77,49 +77,107 @@ if ($total_result && mysqli_num_rows($total_result) > 0) {
         $total_merit_hours = $total_row['total_merit_hours'];
     }
 }
+ include("../partials/header.php"); 
+ $current_page = "merit";?>
 
-include("../partials/header.php");
-?>
 <?php include("../partials/navbar.php"); ?>
 
-<div class="container">
 
-    <div class="header-box">
-        <h2>Merit Tracker Module</h2>
-        <p>View and manage your merit contribution records.</p>
-    </div>
+<div class="container module-shell merit-shell">
+
+    <?php
+        $total_records = 0;
+        $event_merit_count = 0;
+        $club_merit_count = 0;
+        $event_merit_percent = 0;
+        $club_merit_percent = 0;    
+
+        $stats_query = "SELECT event_id, club_id FROM merits WHERE user_id='$user_id'";
+        $stats_result = mysqli_query($con, $stats_query);
+
+        if ($stats_result && mysqli_num_rows($stats_result) > 0) {
+            while ($stats_row = mysqli_fetch_assoc($stats_result)) {
+                $total_records++;
+
+                if (!empty($stats_row['event_id'])) {
+                    $event_merit_count++;
+                }
+
+                if (!empty($stats_row['club_id'])) {
+                    $club_merit_count++;
+                }
+            }
+        }
+
+        if ($total_records > 0) {
+            $event_merit_percent = round(($event_merit_count / $total_records) * 100);
+            $club_merit_percent = round(($club_merit_count / $total_records) * 100);
+        }
+    ?>
+
+    <section class="module-hero module-hero-merit">
+        <div class="module-hero-main">
+            <div class="module-hero-icon merit-accent-soft">⏳</div>
+            <div class="module-hero-text-wrap">
+                <h2>Merit Tracker</h2>
+                <p>Record and manage your contribution hours for volunteering, service, and co-curricular activities.</p>
+            </div>
+        </div>
+
+        <div class="module-hero-actions">
+            <a href="merit_add.php" class="module-btn module-btn-primary merit-accent-btn">+ Add Merit Record</a>
+        </div>
+    </section>
 
     <?php if (!empty($status_message)) { ?>
-        <div class="message <?php echo $status_type; ?>">
+        <div class="message <?php echo $status_type; ?> module-status-message">
             <?php echo $status_message; ?>
         </div>
     <?php } ?>
 
-    <div class="top-actions">
-        <a href="../dashboard.php" class="btn btn-back">Back to Dashboard</a>
-        <a href="merit_add.php" class="btn btn-add">Add New Merit Record</a>
-    </div>
-
-    <!--Total contribution hours summary -->
-    <div class="merit-hours-summary-box">
-        <div class="merit-hours-summary-label">Total Contribution Hours:</div>
-        <div class="merit-hours-summary-value">
-            <?php echo number_format($total_merit_hours, 2); ?> hours
+    <section class="module-stats-grid">
+        <div class="module-stat-card">
+            <div class="module-stat-icon merit-accent-soft">📝</div>
+            <div>
+                <h3><?php echo $total_records; ?></h3>
+                <p>Total Activities</p>
+            </div>
         </div>
-    </div>
 
-    <div class="filter-box">
-        <form method="GET" action="merit_list.php" class="filter-form">
+        <div class="module-stat-card">
+            <div class="module-stat-icon merit-accent-soft">🕒</div>
+            <div>
+                <h3><?php echo number_format((float)$total_merit_hours, 2); ?></h3>
+                <p>Total Contribution Hours</p>
+            </div>
+        </div>
 
-            <div class="form-group group-search">
-                <label for="search">Search Activity Title</label>
-                <input type="text" name="search" id="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Enter activity title">
+        <div class="module-stat-card merit-linkage-mini-card">
+            <div class="merit-linkage-mini-arc merit-linkage-event-arc" style="--p: <?php echo $event_merit_percent; ?>;"></div>
+            <div class="merit-linkage-mini-text">
+                <h3><?php echo $event_merit_count; ?></h3>
+                <p>Event Merit</p>
+            </div>
+        </div>
+
+        <div class="module-stat-card merit-linkage-mini-card">
+            <div class="merit-linkage-mini-arc merit-linkage-club-arc" style="--p: <?php echo $club_merit_percent; ?>;"></div>
+            <div class="merit-linkage-mini-text">
+                <h3><?php echo $club_merit_count; ?></h3>
+                <p>Club Merit</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="module-filter-card">
+        <form method="GET" action="merit_list.php" class="module-filter-form">
+            <div class="module-filter-full">
+                <input type="text" name="search" id="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Search activity title...">
             </div>
 
-            <div class="form-group group-type">
-                <label for="filter_type">Filter by Activity Type</label>
+            <div>
                 <select name="filter_type" id="filter_type">
-                    <option value="">-- All Types --</option>
+                    <option value="">All Types</option>
                     <option value="Volunteering" <?php if ($filter_type == "Volunteering") echo "selected"; ?>>Volunteering</option>
                     <option value="Community Service" <?php if ($filter_type == "Community Service") echo "selected"; ?>>Community Service</option>
                     <option value="Committee Work" <?php if ($filter_type == "Committee Work") echo "selected"; ?>>Committee Work</option>
@@ -129,130 +187,82 @@ include("../partials/header.php");
                 </select>
             </div>
 
-            <div class="form-group group-sort">
-                <label for="sort_order">Sort by Date</label>
+            <div>
                 <select name="sort_order" id="sort_order">
                     <option value="DESC" <?php if ($sort_order == "DESC") echo "selected"; ?>>Newest to Oldest</option>
                     <option value="ASC" <?php if ($sort_order == "ASC") echo "selected"; ?>>Oldest to Newest</option>
                 </select>
             </div>
 
-            <div class="form-group group-btn">
-                <button type="submit" class="btn btn-filter">Apply</button>
-            </div>
-
-            <div class="form-group group-btn">
-                <a href="merit_list.php" class="btn btn-reset">Clear Filters</a>
+            <div class="module-filter-actions">
+                <button type="submit" class="module-btn module-btn-primary merit-accent-btn">Filter</button>
+                <a href="merit_list.php" class="module-btn module-btn-secondary">Reset</a>
             </div>
         </form>
-    </div>
+    </section>
 
-    <div class="table-box">
+    <section class="module-content-card">
         <?php if ($result && mysqli_num_rows($result) > 0) { ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Activity Title</th>
-                        <th>Activity Type</th>
-                        <th>Organizer</th>
-                        <th>Date</th>
-                        <th>Total Hours</th>
-                        <th>Description</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php 
-                    $count = 1;
-                    while ($row = mysqli_fetch_assoc($result)) { ?>
+            <div class="module-table-wrap">
+                <table class="module-table">
+                    <thead>
                         <tr>
-                            <td><?php echo $count; ?></td>
-                            <td><?php echo htmlspecialchars($row['activity_title']); ?></td>
-                            <td><?php echo htmlspecialchars($row['activity_type']); ?></td>
-                            <td><?php echo htmlspecialchars($row['organizer']); ?></td>
-                            <td><?php echo htmlspecialchars($row['activity_date']); ?></td>
-                            <td><?php echo number_format((float)$row['total_hours'], 2); ?></td>
-                            <td><?php echo htmlspecialchars($row['description']); ?></td>
-                            <td>
-                                <a class="action-link edit-link" href="merit_edit.php?merit_id=<?php echo $row['merit_id']; ?>">
-                                    Edit
-                                </a>
-
-                                <a 
-                                    href="#"
-                                    class="action-link delete-link open-delete-modal"
-                                    data-id="<?php echo $row['merit_id']; ?>"
-                                    data-title="<?php echo htmlspecialchars($row['activity_title']); ?>"
-                                    data-type="<?php echo htmlspecialchars($row['activity_type']); ?>"
-                                    data-organizer="<?php echo htmlspecialchars($row['organizer']); ?>"
-                                    data-date="<?php echo htmlspecialchars($row['activity_date']); ?>"
-                                    data-hours="<?php echo number_format((float)$row['total_hours'], 2); ?>"
-                                >
-                                    Delete
-                                </a>
-                            </td>
+                            <th>No.</th>
+                            <th>Activity Title</th>
+                            <th>Activity Type</th>
+                            <th>Organizer</th>
+                            <th>Date</th>
+                            <th>Total Hours</th>
+                            <th>Description</th>
+                            <th>Actions</th>
                         </tr>
-                    <?php 
-                    $count++;
-                    } ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        $count = 1;
+                        while ($row = mysqli_fetch_assoc($result)) { ?>
+                            <tr>
+                                <td><?php echo $count; ?></td>
+                                <td class="module-title-cell"><?php echo htmlspecialchars($row['activity_title']); ?></td>
+                                <td><span class="module-tag merit-tag"><?php echo htmlspecialchars($row['activity_type']); ?></span></td>
+                                <td><?php echo htmlspecialchars($row['organizer']); ?></td>
+                                <td><?php echo htmlspecialchars($row['activity_date']); ?></td>
+                                <td><span class="merit-hours-badge"><?php echo number_format((float)$row['total_hours'], 2); ?> hrs</span></td>
+                                <td class="module-description-cell"><?php echo htmlspecialchars($row['description']); ?></td>
+                                <td>
+                                    <div class="module-action-links">
+                                        <a class="module-action-link module-action-edit" href="merit_edit.php?merit_id=<?php echo $row['merit_id']; ?>">Edit</a>
+                                        <a
+                                            href="#"
+                                            class="module-action-link module-action-delete open-delete-modal"
+                                            data-id="<?php echo $row['merit_id']; ?>"
+                                            data-title="<?php echo htmlspecialchars($row['activity_title']); ?>"
+                                            data-type="<?php echo htmlspecialchars($row['activity_type']); ?>"
+                                            data-organizer="<?php echo htmlspecialchars($row['organizer']); ?>"
+                                            data-date="<?php echo htmlspecialchars($row['activity_date']); ?>"
+                                            data-hours="<?php echo number_format((float)$row['total_hours'], 2); ?>"
+                                        >
+                                            Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php 
+                        $count++;
+                        } ?>
+                    </tbody>
+                </table>
+            </div>
         <?php } else { ?>
-            <div class="empty-message">
-                No merit records found here. Start by adding a new merit record!
+            <div class="module-empty-state">
+                <div class="module-empty-icon merit-accent-text">⏳</div>
+                <h3>No merit records found</h3>
+                <p>Start by adding your first merit contribution record.</p>
+                <a href="merit_add.php" class="module-btn module-btn-primary merit-accent-btn">Add Merit Record</a>
             </div>
         <?php } ?>
-    </div>
+    </section>
 
-</div>
-
-<!-- Delete Confirmation Modal -->
-<div id="deleteMeritModal" class="delete-modal-overlay">
-    <div class="delete-modal-box">
-        <div class="delete-modal-header">
-            <div class="delete-modal-header-text">
-                <h3>Delete Merit Record</h3>
-                <p>Please review the record below before deleting it.</p>
-            </div>
-        </div>
-
-        <div class="delete-modal-warning">
-            This action cannot be undone.
-        </div>
-
-        <div class="delete-modal-info">
-            <div class="delete-modal-info-row">
-                <span class="delete-modal-info-label">Activity Title:</span>
-                <span class="delete-modal-info-value" id="deleteMeritTitle"></span>
-            </div>
-
-            <div class="delete-modal-info-row">
-                <span class="delete-modal-info-label">Activity Type:</span>
-                <span class="delete-modal-info-value" id="deleteMeritType"></span>
-            </div>
-
-            <div class="delete-modal-info-row">
-                <span class="delete-modal-info-label">Organizer:</span>
-                <span class="delete-modal-info-value" id="deleteMeritOrganizer"></span>
-            </div>
-
-            <div class="delete-modal-info-row">
-                <span class="delete-modal-info-label">Date:</span>
-                <span class="delete-modal-info-value" id="deleteMeritDate"></span>
-            </div>
-
-            <div class="delete-modal-info-row">
-                <span class="delete-modal-info-label">Total Hours:</span>
-                <span class="delete-modal-info-value"><span id="deleteMeritHours"></span> hours</span>
-            </div>
-        </div>
-
-        <div class="delete-modal-actions">
-            <button type="button" class="delete-modal-btn delete-modal-btn-cancel" id="cancelDeleteMerit">Cancel</button>
-            <a href="#" class="delete-modal-btn delete-modal-btn-confirm" id="confirmDeleteMerit">Confirm Delete</a>
-        </div>
-    </div>
 </div>
 
 <script>

@@ -98,79 +98,101 @@ if (isset($_POST['submit'])) {
 }
 
 include("../partials/header.php");
+$current_page = "merit";
 ?>
 <?php include("../partials/navbar.php"); ?>
 
-<div class="container">
-    <div class="header-box">
-        <h2>Edit Merit Record</h2>
-        <p>Update the details below for your merit contribution record.</p>
-    </div>
+<div class="container module-shell merit-shell">
+    <section class="module-hero module-hero-merit">
+        <div class="module-hero-main">
+            <div class="module-hero-icon merit-accent-soft">✏️</div>
+            <div class="module-hero-text-wrap">
+                <h2>Edit Merit Record</h2>
+                <p>Update your merit contribution activity and recalculate the total hours automatically.</p>
+            </div>
+        </div>
 
-    <div class="top-actions">
-        <a href="merit_list.php" class="btn btn-back">Back to Merit List</a>
-    </div>
+        <div class="module-hero-actions">
+            <a href="merit_list.php" class="module-btn module-btn-secondary">Back to Merit List</a>
+        </div>
+    </section>
 
-    <div class="page-box">
+    <section class="module-form-card">
         <?php if (!empty($message)) { ?>
-            <div class="message <?php echo $message_type; ?>">
+            <div class="message <?php echo $message_type; ?> module-status-message">
                 <?php echo $message; ?>
             </div>
         <?php } ?>
 
-        <form method="POST" action="">
+        <form method="POST" action="" class="module-form-layout">
             <input type="hidden" name="merit_id" value="<?php echo htmlspecialchars($merit_id); ?>">
 
-            <label for="activity_title">Activity Title:</label>
-            <input type="text" id="activity_title" name="activity_title" value="<?php echo htmlspecialchars($activity_title); ?>" required>
+            <div class="module-form-grid">
+                <div class="module-field">
+                    <label for="activity_title">Activity Title</label>
+                    <input type="text" id="activity_title" name="activity_title" value="<?php echo htmlspecialchars($activity_title); ?>" required>
+                </div>
 
-            <label for="activity_type">Activity Type:</label>
-            <select name="activity_type" id="activity_type" required>
-                <option value="">-- Select Activity Type --</option>
-                <option value="Volunteering" <?php if ($activity_type == "Volunteering") echo "selected"; ?>>Volunteering</option>
-                <option value="Community Service" <?php if ($activity_type == "Community Service") echo "selected"; ?>>Community Service</option>
-                <option value="Committee Work" <?php if ($activity_type == "Committee Work") echo "selected"; ?>>Committee Work</option>
-                <option value="Club Service" <?php if ($activity_type == "Club Service") echo "selected"; ?>>Club Service</option>
-                <option value="University Service" <?php if ($activity_type == "University Service") echo "selected"; ?>>University Service</option>
-                <option value="Other" <?php if ($activity_type == "Other") echo "selected"; ?>>Other</option>
-            </select>
+                <div class="module-field">
+                    <label for="activity_type">Activity Type</label>
+                    <select name="activity_type" id="activity_type" required>
+                        <option value="">-- Select Activity Type --</option>
+                        <option value="Volunteering" <?php if ($activity_type == "Volunteering") echo "selected"; ?>>Volunteering</option>
+                        <option value="Community Service" <?php if ($activity_type == "Community Service") echo "selected"; ?>>Community Service</option>
+                        <option value="Committee Work" <?php if ($activity_type == "Committee Work") echo "selected"; ?>>Committee Work</option>
+                        <option value="Club Service" <?php if ($activity_type == "Club Service") echo "selected"; ?>>Club Service</option>
+                        <option value="University Service" <?php if ($activity_type == "University Service") echo "selected"; ?>>University Service</option>
+                        <option value="Other" <?php if ($activity_type == "Other") echo "selected"; ?>>Other</option>
+                    </select>
+                </div>
 
-            <label for="organizer">Organizer:</label>
-            <input type="text" id="organizer" name="organizer" value="<?php echo htmlspecialchars($organizer); ?>" required>
+                <div class="module-field">
+                    <label for="organizer">Organizer</label>
+                    <input type="text" id="organizer" name="organizer" value="<?php echo htmlspecialchars($organizer); ?>" required>
+                </div>
 
-            <label for="activity_date">Activity Date:</label>
-            <input type="date" id="activity_date" name="activity_date" value="<?php echo htmlspecialchars($activity_date); ?>" required>
+                <div class="module-field">
+                    <label for="activity_date">Activity Date</label>
+                    <input type="date" id="activity_date" name="activity_date" value="<?php echo htmlspecialchars($activity_date); ?>" required>
+                </div>
 
-            <div class="merit-time-wrapper">
-                <div class="merit-time-card">
-                    <div class="merit-time-grid">
-                        <div class="merit-time-input-box">
-                            <label for="start_time" class="merit-time-label">Start Time</label>
-                            <input type="time" id="start_time" name="start_time" value="<?php echo htmlspecialchars($start_time); ?>" required>
+                <div class="module-field module-field-full">
+                    <label>Contribution Time</label>
+                    <div class="merit-time-card">
+                        <div class="merit-time-grid">
+                            <div class="merit-time-input-box">
+                                <label for="start_time" class="merit-time-label">Start Time</label>
+                                <input type="time" id="start_time" name="start_time" value="<?php echo htmlspecialchars($start_time); ?>" required>
+                            </div>
+
+                            <div class="merit-time-input-box">
+                                <label for="end_time" class="merit-time-label">End Time</label>
+                                <input type="time" id="end_time" name="end_time" value="<?php echo htmlspecialchars($end_time); ?>" required>
+                            </div>
                         </div>
 
-                        <div class="merit-time-input-box">
-                            <label for="end_time" class="merit-time-label">End Time</label>
-                            <input type="time" id="end_time" name="end_time" value="<?php echo htmlspecialchars($end_time); ?>" required>
+                        <div class="merit-total-hours-card">
+                            <div class="merit-total-hours-text">Total Hours</div>
+                            <input type="text" id="total_hours_display"
+                                value="<?php echo !empty($total_hours) ? htmlspecialchars(number_format((float)$total_hours, 2)) : ''; ?>"
+                                readonly
+                                placeholder="Auto-calculated">
                         </div>
-                    </div>
-
-                    <div class="merit-total-hours-card">
-                        <div class="merit-total-hours-text">Total Hours</div>
-                        <input type="text" id="total_hours_display"
-                            value="<?php echo !empty($total_hours) ? htmlspecialchars(number_format((float)$total_hours, 2)) : ''; ?>"
-                            readonly
-                            placeholder="Auto-calculated">
                     </div>
                 </div>
-            </div>
-            
-            <label for="description">Description:</label>
-            <textarea id="description" name="description" rows="5"><?php echo htmlspecialchars($description); ?></textarea>
 
-            <input type="submit" name="submit" value="Update Merit Record">
+                <div class="module-field module-field-full">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="6"><?php echo htmlspecialchars($description); ?></textarea>
+                </div>
+            </div>
+
+            <div class="module-form-actions">
+                <a href="merit_list.php" class="module-btn module-btn-secondary">Cancel</a>
+                <button type="submit" name="submit" class="module-btn module-btn-primary merit-accent-btn">Update Merit Record</button>
+            </div>
         </form>
-    </div>
+    </section>
 </div>
 
 <script>

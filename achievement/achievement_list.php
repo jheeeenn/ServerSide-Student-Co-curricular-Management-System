@@ -33,7 +33,7 @@ $search = $_GET['search'] ?? "";
 $type = $_GET['type'] ?? "";
 $sort = $_GET['sort'] ?? "DESC";
 
-
+/*
 $query = "SELECT * FROM achievements WHERE user_id='$user_id'";
 
 if (!empty($search)) {
@@ -43,43 +43,125 @@ if (!empty($search)) {
 if (!empty($type)) {
     $query .= " AND achievement_type = '" . mysqli_real_escape_string($con, $type) . "'";
 }
-
+    
 $query .= " ORDER BY date_achieved $sort";
+$result = mysqli_query($con, $query);*/
+
+$query = "
+    SELECT achievements.*, events.event_title AS related_event_title
+    FROM achievements
+    LEFT JOIN events ON achievements.event_id = events.event_id
+    WHERE achievements.user_id='$user_id'
+";
+
+if (!empty($search)) {
+    $query .= " AND achievements.title LIKE '%" . mysqli_real_escape_string($con, $search) . "%'";
+}
+
+if (!empty($type)) {
+    $query .= " AND achievements.achievement_type = '" . mysqli_real_escape_string($con, $type) . "'";
+}
+
+$query .= " ORDER BY achievements.date_achieved $sort";
 $result = mysqli_query($con, $query);
 
+
+
 include("../partials/header.php");
+$current_page = "achievement";
 include("../partials/navbar.php");
 ?>
 
-<div class="container">
+<div class="container module-shell achievement-shell">
 
-    <div class="header-box">
-        <h2>🏆 Achievements Tracker</h2>
-        <p>Keep track of your achievements and milestones.</p>
-    </div>
+    <?php
+       $total_achievements = 0;
+        $total_types = [];
+        $linked_count = 0;
+        $unlinked_count = 0;
+        $link_percent = 0;
+
+        $stats_query = "SELECT achievement_type, event_id FROM achievements WHERE user_id='$user_id'";
+        $stats_result = mysqli_query($con, $stats_query);
+
+        if ($stats_result && mysqli_num_rows($stats_result) > 0) {
+            while ($stats_row = mysqli_fetch_assoc($stats_result)) {
+                $total_achievements++;
+
+                if (!empty($stats_row['achievement_type'])) {
+                    $total_types[$stats_row['achievement_type']] = true;
+                }
+
+                if (!empty($stats_row['event_id'])) {
+                    $linked_count++;
+                } else {
+                    $unlinked_count++;
+                }
+            }
+        }
+
+        $type_count = count($total_types);
+
+        if ($total_achievements > 0) {
+            $link_percent = round(($linked_count / $total_achievements) * 100);
+        }
+    ?>
+
+    <section class="module-hero module-hero-achievement">
+        <div class="module-hero-main">
+            <div class="module-hero-icon achievement-accent-soft">🏆</div>
+            <div class="module-hero-text-wrap">
+                <h2>Achievement Tracker</h2>
+                <p>Track your awards, recognitions, certificates, and accomplishments.</p>
+            </div>
+        </div>
+
+        <div class="module-hero-actions">
+            <a href="achievement_add.php" class="module-btn module-btn-primary achievement-accent-btn">+ Add Achievement</a>
+        </div>
+    </section>
 
     <?php if (!empty($status_message)) { ?>
-        <div class="message <?php echo $status_type; ?>">
+        <div class="message <?php echo $status_type; ?> module-status-message">
             <?php echo $status_message; ?>
         </div>
     <?php } ?>
 
-    <div class="top-actions">
-        <a href="../dashboard.php" class="btn btn-back">Back to Dashboard</a>
-        <a href="achievement_add.php" class="btn btn-add">Add Achievement</a>
-    </div>
+    <section class="module-stats-grid">
+        <div class="module-stat-card">
+            <div class="module-stat-icon achievement-accent-soft">🏆</div>
+            <div>
+                <h3><?php echo $total_achievements; ?></h3>
+                <p>Total Achievements</p>
+            </div>
+        </div>
 
-    <div class="filter-box">
-        <form method="GET" class="filter-form">
-            <div class="form-group group-search">
-                <label>Search Title</label>
-                <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Search title...">
+        <div class="module-stat-card">
+            <div class="module-stat-icon achievement-accent-soft">✺</div>
+            <div>
+                <h3><?php echo $type_count; ?></h3>
+                <p>Types of Awards</p>
+            </div>
+        </div>
+
+        <div class="module-stat-card achievement-linkage-mini-card">
+            <div class="achievement-linkage-mini-arc" style="--p: <?php echo $link_percent; ?>;"></div>
+            <div class="achievement-linkage-mini-text">
+                <h3><?php echo $link_percent; ?>%</h3>
+                <p>Linked Event</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="module-filter-card">
+        <form method="GET" action="achievement_list.php" class="module-filter-form">
+            <div class="module-filter-full">
+                <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Search achievement title...">
             </div>
 
-            <div class="form-group group-type">
-                <label>Category</label>
+            <div>
                 <select name="type">
-                    <option value="">All Categories</option>
+                    <option value="">All Types</option>
                     <option value="Award" <?php if($type=="Award") echo "selected"; ?>>Award</option>
                     <option value="Certificate" <?php if($type=="Certificate") echo "selected"; ?>>Certificate</option>
                     <option value="Medal" <?php if($type=="Medal") echo "selected"; ?>>Medal</option>
@@ -87,73 +169,88 @@ include("../partials/navbar.php");
                 </select>
             </div>
 
-            <div class="form-group group-sort">
-                <label>Sort Date</label>
+            <div>
                 <select name="sort">
                     <option value="DESC" <?php if($sort=="DESC") echo "selected"; ?>>Newest First</option>
                     <option value="ASC" <?php if($sort=="ASC") echo "selected"; ?>>Oldest First</option>
                 </select>
             </div>
 
-            <div class="form-group group-btn">
-                <button type="submit" class="btn btn-filter">Apply</button>
-            </div>
-
-            <div class="form-group group-btn">
-                <a href="achievement_list.php" class="btn btn-reset">Reset</a>
+            <div class="module-filter-actions">
+                <button type="submit" class="module-btn module-btn-primary achievement-accent-btn">Filter</button>
+                <a href="achievement_list.php" class="module-btn module-btn-secondary">Reset</a>
             </div>
         </form>
-    </div>
+    </section>
 
-    <div class="table-box">
+    <section class="module-content-card">
         <?php if(mysqli_num_rows($result) > 0) { ?>
-        <table>
-            <thead>
-                <tr>
-                    <th style="min-width: 50px;">#</th>
-                    <th>Achievement Details</th>
-                    <th>Category</th>
-                    <th>Organizer</th>
-                    <th>Date</th>
-                    <th>Proof</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php $count = 1; while($row = mysqli_fetch_assoc($result)) { ?>
-                <tr>
-                    <td><?php echo $count++; ?></td>
-                    <td>
-                        <strong><?php echo htmlspecialchars($row['title']); ?></strong><br>
-                        <small style="color: #666;"><?php echo htmlspecialchars($row['description']); ?></small>
-                    </td>
-                    <td><?php echo htmlspecialchars($row['achievement_type']); ?></td>
-                    <td><?php echo htmlspecialchars($row['organizer']); ?></td>
-                    <td><?php echo htmlspecialchars($row['date_achieved']); ?></td>
-                    <td>
-                        <?php if(!empty($row['certificate_file'])) { ?>
-                            <a href="uploads/<?php echo $row['certificate_file']; ?>" target="_blank" class="action-link edit-link">View File</a>
-                        <?php } else { ?>
-                            <span style="color:#aaa; font-style: italic;">No Proof</span>
+            <div class="module-table-wrap">
+                <table class="module-table">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Achievement Details</th>
+                            <th>Category</th>
+                            <th>Related Event</th>
+                            <th>Organizer</th>
+                            <th>Date</th>
+                            <th>Proof</th>
+                            <th>Actions</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $count = 1; while($row = mysqli_fetch_assoc($result)) { ?>
+                        <tr>
+                            <td><?php echo $count++; ?></td>
+                            <td>
+                                <div class="achievement-title-block">
+                                    <strong class="module-title-cell"><?php echo htmlspecialchars($row['title']); ?></strong>
+                                    <div class="module-description-cell"><?php echo htmlspecialchars($row['description']); ?></div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="module-tag achievement-tag"><?php echo htmlspecialchars($row['achievement_type']); ?></span>
+                            </td>
+
+                            <td>
+                                <?php if (!empty($row['related_event_title'])) { ?>
+                                    <span class="module-tag event-tag"><?php echo htmlspecialchars($row['related_event_title']); ?></span>
+                                <?php } else { ?>
+                                    <span class="achievement-proof-empty">Not linked</span>
+                                <?php } ?>
+                            </td>
+
+                            <td><?php echo htmlspecialchars($row['organizer']); ?></td>
+                            <td><?php echo htmlspecialchars($row['date_achieved']); ?></td>
+                            <td>
+                                <?php if(!empty($row['certificate_file'])) { ?>
+                                    <a href="uploads/<?php echo $row['certificate_file']; ?>" target="_blank" class="achievement-proof-link">View File</a>
+                                <?php } else { ?>
+                                    <span class="achievement-proof-empty">No Proof</span>
+                                <?php } ?>
+                            </td>
+                            <td>
+                                <div class="module-action-links">
+                                    <a href="achievement_edit.php?achievement_id=<?php echo $row['achievement_id']; ?>" class="module-action-link module-action-edit">Edit</a>
+                                    <a href="achievement_delete.php?achievement_id=<?php echo $row['achievement_id']; ?>" class="module-action-link module-action-delete">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
                         <?php } ?>
-                    </td>
-                    <td>
-                        <a href="achievement_edit.php?achievement_id=<?php echo $row['achievement_id']; ?>" class="action-link edit-link">Edit</a>
-                        <a href="achievement_delete.php?achievement_id=<?php echo $row['achievement_id']; ?>" class="action-link delete-link">
-                           Delete
-                        </a>
-                    </td>
-                </tr>
-                <?php } ?>
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
         <?php } else { ?>
-        <div class="empty-message">
-            🎯 No achievements found.<br><br>
-            Start adding your accomplishments to build your profile!
-        </div>
+            <div class="module-empty-state">
+                <div class="module-empty-icon achievement-accent-text">🏆</div>
+                <h3>No achievements found</h3>
+                <p>Start by adding your first achievement record.</p>
+                <a href="achievement_add.php" class="module-btn module-btn-primary achievement-accent-btn">Add Achievement</a>
+            </div>
         <?php } ?>
-    </div>
+    </section>
 </div>
 </body>
 </html>

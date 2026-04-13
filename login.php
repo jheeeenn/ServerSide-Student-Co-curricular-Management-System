@@ -68,128 +68,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #c7dcfb;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .card {
-            background: #ffffff;
-            width: 400px;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
-        }
-        .message {
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 18px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        h2{
-            margin-top: 0;
-            text-align: center;
-            color: #333;
-        }
-        .error{
-            background-color: #f58d96;
-            color: #b30000;
-            border: 1px solid #ffb3b3;
-        }
-
-        .success {
-            background-color: #c8e6c9;
-            color: #2e7d32;
-            border: 1px solid #2e7d32;
-        }
-
-        label{
-            display: block;
-            color: #333;
-        }
-        input[type="email"],
-        input[type="password"] {
-             width: 100%;
-            padding: 10px;
-            margin-top: 6px;
-            margin-bottom: 16px;
-            border: 1px solid #cccccc;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 14px;
-
-
-        }
-
-        input[type="submit"] {
-            width: 100%;
-            padding: 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-
-
-    </style>
-
+    <title>Login | JX Student CoCo Hub</title>
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+
+<div class="auth-page">
+    <!-- Hero section with branding and features -->
+
+    <section class="auth-hero auth-hero-login">
     
-    <div class="container">
-        <div class="card">
-            <h2>User Login</h2>
+    <div class="auth-bg-orb auth-bg-orb-two"></div>
+    <div class="auth-bg-orb auth-bg-orb-three"></div>
+    <div class="auth-bg-glass auth-bg-glass-one"></div>
+    <div class="auth-bg-glass auth-bg-glass-two"></div>
+    <div class="auth-bg-grid"></div>
 
+    <div class="auth-hero-content">
+        <div class="auth-brand-row">
             
+            
+            <div class="auth-brand-mark dark-brand">JX Student CoCo Hub</div>
+            <div class="auth-mini-line"></div>
+        </div>
 
-            <?php if(!empty($message)) {?>
-                <div class="message <?php echo $message_type; ?>">
+        <h1 class="auth-login-title">Student Co-Curricular<br>Management System</h1>
+
+        <p class="auth-login-lead">
+            One portal to manage your student events, club activities, merit contributions, and achievements.
+        </p>
+
+        <div class="auth-hero-highlight">
+            <div class="auth-highlight-number">4</div>
+            <div class="auth-highlight-text">
+                <strong>Unified modules</strong>
+                <span>Events, Clubs, Merits, and Achievements connected in one system.</span>
+            </div>
+        </div>
+
+        <div class="auth-feature-list auth-feature-list-compact">
+            <div class="auth-feature-item auth-feature-item-dark">
+                <div class="auth-feature-icon">📌</div>
+                <div class="auth-feature-text auth-feature-text-dark">
+                    <strong>Keep all records organized</strong>
+                    <span>Track and update your co-curricular records from a single dashboard.</span>
+                </div>
+            </div>
+
+            <div class="auth-feature-item auth-feature-item-dark">
+                <div class="auth-feature-icon">📊</div>
+                <div class="auth-feature-text auth-feature-text-dark">
+                    <strong>Monitor your progress</strong>
+                    <span>See your activity participation and contribution hours more clearly.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section class="auth-panel-wrap">
+        <div class="auth-panel">
+            <h2>Welcome back</h2>
+            <p class="auth-panel-subtext">Sign in to continue managing your co-curricular profile.</p>
+
+            <?php if (!empty($message)) { ?>
+                <div class="auth-message <?php echo $message_type; ?>">
                     <?php echo $message; ?>
                 </div>
             <?php } ?>
 
-            <form method="POST" action="">
-                <label for="email">Email:</label>
-                <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>" required>
-
-                <label for="password">Password:</label>
-                <input type="password" name="password" id="password" required><br><br>
-
-                <input type="submit" name="login" value="Login">
-
-                <div style = "margin-top: 15px;">
-                    <input type="checkbox" name="remember_email" id="remember_email" 
-                    <?php if(isset($_COOKIE['remembered_email']) && $email == $_COOKIE['remembered_email']) echo 'checked'; ?>>
-                    <label for="remember_email" style="display: inline; color: #333;">
-                        Remember Email</label>
+            <form method="POST" action="" class="auth-form">
+                <div class="field-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>" required>
                 </div>
+
+                <div class="field-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" required>
+                </div>
+
+                <div class="auth-options">
+                    <label class="auth-checkbox" for="remember_email">
+                        <input type="checkbox" name="remember_email" id="remember_email"
+                            <?php if (isset($_COOKIE['remembered_email']) && $email == $_COOKIE['remembered_email']) echo 'checked'; ?>>
+                        <span>Remember Email</span>
+                    </label>
+
+                    <a class="auth-inline-link" href="forgot_password.php">Forgot Password?</a>
+                </div>
+
+                <button type="submit" name="login" class="auth-submit">Login</button>
             </form>
 
-            <p>Don't have an account? <a href="register.php">Register here</a>.</p>
-
-            <p><a href="forgot_password.php">Forgot Password?</a></p>
-
+            <div class="auth-links">
+                <p>New here? <a href="register.php">Create an account</a></p>
+            </div>
         </div>
-    </div>
+    </section>
+</div>
+
 </body>
 </html>

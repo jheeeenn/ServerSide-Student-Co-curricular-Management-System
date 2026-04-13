@@ -75,69 +75,69 @@ if(isset($_POST['submit'])) {
 }
 
 include("../partials/header.php");
+$current_page = "club";
 include("../partials/navbar.php");
 ?>
 
-<div style="position: absolute; top: 18px; right: 30px; z-index: 9999;">
-    <form method="POST" style="margin: 0;">
-        <button type="submit" name="toggle_theme" class="btn" style="background-color: #343a40; color: white; border: 1px solid #fff;">Toggle Theme</button>
-    </form>
-</div>
-
-<style>
-    .header-box, .filter-box, .table-box, .page-box { background-color: #ffffff !important; }
-    <?php if ($theme == 'dark') { ?>
-    body { background-image: none !important; background-color: #121212 !important; }
-    .header-box, .filter-box, .table-box, .page-box { background-color: #1e1e1e !important; color: #ffffff !important; border: 1px solid #333 !important; }
-    h1, h2, h3, h4, label, p { color: #ffffff !important; }
-    input, select, textarea { background-color: #333333 !important; color: #ffffff !important; border: 1px solid #555 !important; }
-    <?php } ?>
-</style>
-
-<div class="container">
-    <div class="header-box">
-        <h2 style="margin-top: 0;">Edit Club</h2>
-        <p>Update your club records to the latest information.</p>
-        <div style="clear: both;"></div>
-    </div>
-
-    <div class="top-actions" style="overflow: auto; margin-bottom: 20px;">
-        <div style="float: left;">
-            <a href="club_list.php" class="btn btn-back">Back to Clubs List</a>
+<div class="container module-shell club-shell">
+    <section class="module-hero module-hero-club">
+        <div class="module-hero-main">
+            <div class="module-hero-icon club-accent-soft">✏️</div>
+            <div class="module-hero-text-wrap">
+                <h2>Edit Club</h2>
+                <p>Update your club membership details and role information.</p>
+            </div>
         </div>
-    </div>
 
-    <div class="table-box" style="max-width: 600px; margin: 0 auto; min-width: auto;">
+        <div class="module-hero-actions">
+            <a href="club_list.php" class="module-btn module-btn-secondary">Back to Clubs</a>
+        </div>
+    </section>
+
+    <section class="module-form-card">
         <?php if(!empty($message)) { ?>
-            <div class="message <?php echo $message_type; ?>">
+            <div class="message <?php echo $message_type; ?> module-status-message">
                 <?php echo $message; ?>
             </div>
         <?php } ?>
 
-        <form method="POST" action="">
-            <label for="club_name">Club Name:</label>
-            <input type="text" id="club_name" name="club_name" value="<?php echo htmlspecialchars($club_name); ?>" required>
+        <form method="POST" action="" class="module-form-layout">
+            <div class="module-form-grid">
+                <div class="module-field">
+                    <label for="club_name">Club Name</label>
+                    <input type="text" id="club_name" name="club_name" value="<?php echo htmlspecialchars($club_name); ?>" required>
+                </div>
 
-            <label for="role">Role:</label>
-            <select id="role" name="role" required>
-             <option value="">-- Select a Role --</option>
-             <option value="President" <?php if($role == 'President') echo 'selected'; ?>>President</option>
-             <option value="Vice President" <?php if($role == 'Vice President') echo 'selected'; ?>>Vice President</option>
-             <option value="Secretary" <?php if($role == 'Secretary') echo 'selected'; ?>>Secretary</option>
-             <option value="Treasurer" <?php if($role == 'Treasurer') echo 'selected'; ?>>Treasurer</option>
-             <option value="Committee Member" <?php if($role == 'Committee Member') echo 'selected'; ?>>Committee Member</option>
-             <option value="Member" <?php if($role == 'Member') echo 'selected'; ?>>Member</option>
-            </select>
-            
-            <label for="join_date">Date Joined:</label>
-            <input type="date" id="join_date" name="join_date" value="<?php echo htmlspecialchars($join_date); ?>" max="<?php echo date('Y-m-d'); ?>" required>
+                <div class="module-field">
+                    <label for="role">Role</label>
+                    <select id="role" name="role" required>
+                        <option value="">-- Select a Role --</option>
+                        <option value="President" <?php if($role == 'President') echo 'selected'; ?>>President</option>
+                        <option value="Vice President" <?php if($role == 'Vice President') echo 'selected'; ?>>Vice President</option>
+                        <option value="Secretary" <?php if($role == 'Secretary') echo 'selected'; ?>>Secretary</option>
+                        <option value="Treasurer" <?php if($role == 'Treasurer') echo 'selected'; ?>>Treasurer</option>
+                        <option value="Committee Member" <?php if($role == 'Committee Member') echo 'selected'; ?>>Committee Member</option>
+                        <option value="Member" <?php if($role == 'Member') echo 'selected'; ?>>Member</option>
+                    </select>
+                </div>
 
-            <label for="description">Description:</label>
-            <textarea id="description" name="description" rows="5"><?php echo htmlspecialchars($description); ?></textarea>
+                <div class="module-field">
+                    <label for="join_date">Date Joined</label>
+                    <input type="date" id="join_date" name="join_date" value="<?php echo htmlspecialchars($join_date); ?>" max="<?php echo date('Y-m-d'); ?>" required>
+                </div>
 
-            <input type="submit" name="submit" value="Update Club">
+                <div class="module-field module-field-full">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="6"><?php echo htmlspecialchars($description); ?></textarea>
+                </div>
+            </div>
+
+            <div class="module-form-actions">
+                <a href="club_list.php" class="module-btn module-btn-secondary">Cancel</a>
+                <button type="submit" name="submit" class="module-btn module-btn-primary club-accent-btn">Update Club</button>
+            </div>
         </form>
-    </div>
+    </section>
 </div>
 </body>
 </html>
