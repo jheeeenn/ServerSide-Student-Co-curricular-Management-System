@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 13, 2026 at 06:20 PM
+-- Generation Time: Apr 14, 2026 at 06:06 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -51,8 +51,12 @@ INSERT INTO `achievements` (`achievement_id`, `user_id`, `title`, `achievement_t
 (15, 6, 'Cybersecurity Tournament', 'Other', 'TARC', '2024-02-02', '10th Place', '', '2026-04-10 06:13:40', '2026-04-13 14:12:13', NULL),
 (22, 4, 'Best Facilitator Certificate', 'Certificate', 'Google Developer Student Club UTAR', '2026-03-12', 'Recognized for effective support and facilitation during the Flutter Fundamentals Workshop.', '', '2026-04-13 16:19:28', '2026-04-13 16:19:28', 14),
 (23, 4, 'Appreciation Award for Volunteer Service', 'Award', 'Red Crescent Society', '2026-03-28', 'Awarded for active volunteer service and support during the Interfaculty Blood Donation Drive.', '', '2026-04-13 16:19:28', '2026-04-13 16:19:28', 15),
-(24, 4, 'Quarter-Finalist - Model ASEAN Debate 2026', 'Other', 'Debate and Public Speaking Club', '2026-04-09', 'Reached the quarter-final stage in the Model ASEAN Debate 2026 competition.', '', '2026-04-13 16:19:28', '2026-04-13 16:19:28', 16),
-(25, 4, 'Dean\'s Co-Curricular Excellence Recognition', 'Award', 'Faculty of ICT', '2026-04-25', 'Recognized for consistent participation and contribution across technical, service, and leadership activities.', '', '2026-04-13 16:19:28', '2026-04-13 16:19:28', NULL);
+(24, 4, 'Quarter-Finalist - Model ASEAN Debate 2026', 'Other', 'Debate and Public Speaking Club', '2026-04-09', 'Reached the quarter-final stage in the Model ASEAN Debate 2026 competition.', '1776139438_1775801224_1.png', '2026-04-13 16:19:28', '2026-04-14 04:03:58', 16),
+(25, 4, 'Dean\'s Co-Curricular Excellence Recognition', 'Award', 'Faculty of ICT', '2026-04-25', 'Recognized for consistent participation and contribution across technical, service, and leadership activities.', '1776139429_1775799956_2.jpg', '2026-04-13 16:19:28', '2026-04-14 04:03:49', NULL),
+(26, 3, 'Certificate of Participation - Campus Photography Walk', 'Certificate', 'Photography Club', '2026-04-06', 'Awarded for active participation and photo submission during the campus photography activity.', '', '2026-04-14 03:59:06', '2026-04-14 03:59:06', 23),
+(27, 3, 'Volunteer Appreciation Award', 'Award', 'Community Service Society', '2026-03-22', 'Recognized for active support and contribution during the Food Donation Packing Day programme.', '', '2026-04-14 03:59:06', '2026-04-14 03:59:06', 22),
+(28, 3, 'Friendly Match Silver Medal', 'Medal', 'Badminton Club', '2026-04-19', 'Received second place recognition in the Interfaculty Badminton Friendly Match.', '1776139282_UCCD3223_OCTOBER2025.pdf', '2026-04-14 03:59:06', '2026-04-14 04:01:22', 24),
+(29, 3, 'Faculty Active Student Recognition', 'Other', 'Faculty of ICT', '2026-05-10', 'Recognized for consistent involvement in co-curricular and student engagement activities throughout the semester.', '1776139262_UCCD3243_OCTOBER2025.pdf', '2026-04-14 03:59:06', '2026-04-14 04:01:02', NULL);
 
 -- --------------------------------------------------------
 
@@ -84,7 +88,11 @@ INSERT INTO `clubs` (`club_id`, `user_id`, `club_name`, `role`, `join_date`, `de
 (12, 4, 'Google Developer Student Club UTAR', 'Vice President', '2025-09-15', 'Helps organize technical workshops, sharing sessions, and student developer activities on campus.'),
 (13, 4, 'Red Crescent Society', 'Member', '2025-10-02', 'Participates in volunteer work, blood donation campaigns, and welfare-related service activities.'),
 (14, 4, 'Debate and Public Speaking Club', 'Secretary', '2026-01-10', 'Supports meeting coordination, event planning, and public speaking training activities.'),
-(15, 4, 'Basketball Club', 'Member', '2025-08-20', 'Regularly joins training sessions, friendly matches, and interfaculty sports activities.');
+(15, 4, 'Basketball Club', 'Member', '2025-08-20', 'Regularly joins training sessions, friendly matches, and interfaculty sports activities.'),
+(16, 3, 'Photography Club', 'Member', '2025-09-08', 'Joins campus photo walks, event coverage, and basic photography sharing sessions.'),
+(17, 3, 'Computer Society', 'Committee Member', '2025-10-15', 'Supports technical events, coding activities, and student engagement sessions related to computing.'),
+(18, 3, 'Badminton Club', 'Member', '2026-01-12', 'Participates in weekly training sessions, friendly games, and recreational sports activities.'),
+(19, 3, 'Community Service Society', 'Vice President', '2025-08-20', 'Helps plan welfare visits, donation drives, and volunteer outreach programmes.');
 
 -- --------------------------------------------------------
 
@@ -110,15 +118,17 @@ CREATE TABLE `events` (
 --
 
 INSERT INTO `events` (`event_id`, `user_id`, `event_title`, `event_type`, `organizer`, `event_date`, `location`, `description`, `created_at`, `club_id`) VALUES
-(1, 3, 'event 1', 'Competition', '1234', '2026-04-07', 'block n', '12312342131223123123123123123123213', '2026-04-07 12:21:52', NULL),
-(3, 3, '第一个', '', '1234asdavac', '2027-01-29', 'block k   hall 1', '12321 wewasd asd asd \r\nasdasdas\r\nasdas\r\nasdasd\r\nasd', '2026-04-07 13:27:21', NULL),
-(5, 3, 'event 3', 'Workshop', '123', '0132-03-12', '123', '123', '2026-04-07 14:03:21', NULL),
 (10, 8, 'Men\'s 300M National Tournament Runner-Up', 'Competition', 'Omelympics', '2021-12-22', '4245, James F. Burlington Street, 10780, Gramma\'s Pavements, Sydney', 'Runner-up to men\'s 300M national tournament.', '2026-04-10 14:14:59', NULL),
 (14, 4, 'Flutter Fundamentals Workshop', 'Workshop', 'Google Developer Student Club UTAR', '2026-03-12', 'ICT Lab 3', 'A hands-on workshop introducing Flutter basics, widget structure, and simple mobile UI development.', '2026-04-13 16:19:28', 12),
 (15, 4, 'Interfaculty Blood Donation Drive', 'University Event', 'Red Crescent Society', '2026-03-28', 'Student Pavilion', 'A community service event encouraging blood donation among students and staff.', '2026-04-13 16:19:28', 13),
 (16, 4, 'Model ASEAN Debate 2026', 'Competition', 'Debate and Public Speaking Club', '2026-04-09', 'Lecture Hall A', 'An inter-university debate competition focused on regional and policy-related issues.', '2026-04-13 16:19:28', 14),
 (17, 4, 'AI Career Talk: Building with LLMs', 'Talk', 'Faculty of ICT', '2026-04-18', 'DK A', 'An industry sharing session on AI careers, large language models, and real-world software development.', '2026-04-13 16:19:28', 12),
-(18, 4, '3-on-3 Friendly Basketball Carnival', 'Competition', 'Basketball Club', '2026-05-03', 'Sports Complex', 'A friendly sports event involving mixed teams from different faculties.', '2026-04-13 16:19:28', 15);
+(18, 4, '3-on-3 Friendly Basketball Carnival', 'Competition', 'Basketball Club', '2026-05-03', 'Sports Complex', 'A friendly sports event involving mixed teams from different faculties.', '2026-04-13 16:19:28', 15),
+(21, 3, 'Intro to Web Development Workshop', 'Workshop', 'Computer Society', '2026-03-05', 'Computer Lab 2', 'A beginner-friendly workshop covering HTML, CSS, and basic PHP concepts for students.', '2026-04-14 03:59:06', 17),
+(22, 3, 'Food Donation Packing Day', 'University Event', 'Community Service Society', '2026-03-22', 'Multipurpose Hall', 'A volunteer activity to prepare and pack food supplies for community distribution.', '2026-04-14 03:59:06', 19),
+(23, 3, 'Campus Photography Walk', 'Other', 'Photography Club', '2026-04-06', 'Main Campus Grounds', 'A guided campus walk for members to practice composition, portrait, and event photography.', '2026-04-14 03:59:06', 16),
+(24, 3, 'Interfaculty Badminton Friendly Match', 'Competition', 'Badminton Club', '2026-04-19', 'Sports Hall', 'A friendly interfaculty badminton session for recreational and semi-competitive players.', '2026-04-14 03:59:06', 18),
+(25, 3, 'Faculty Career Sharing Session', 'Talk', 'Faculty of ICT', '2026-05-02', 'Lecture Theatre B', 'A faculty-organized sharing session featuring alumni and industry speakers on career readiness.', '2026-04-14 03:59:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -157,7 +167,11 @@ INSERT INTO `merits` (`merit_id`, `user_id`, `activity_title`, `activity_type`, 
 (16, 4, 'Interfaculty Blood Donation Drive', 'Volunteering', 'Red Crescent Society', '2026-03-28', '08:30:00', '14:30:00', 6.00, 'Assisted in donor registration, queue coordination, and volunteer support throughout the event.', '2026-04-13 16:19:28', '2026-04-13 16:19:28', 15, 13),
 (17, 4, 'Model ASEAN Debate 2026', 'Committee Work', 'Debate and Public Speaking Club', '2026-04-09', '10:00:00', '15:00:00', 5.00, 'Handled documentation, timekeeping, and contestant coordination during the debate competition.', '2026-04-13 16:19:28', '2026-04-13 16:19:28', 16, 14),
 (18, 4, 'Basketball Club Weekly Training Support', 'Club Service', 'Basketball Club', '2026-04-20', '17:00:00', '19:30:00', 2.50, 'Helped prepare equipment, attendance, and court arrangement for the weekly training session.', '2026-04-13 16:19:28', '2026-04-13 16:19:28', NULL, 15),
-(19, 4, 'Library Orientation Volunteer Team', 'University Service', 'UTAR Library', '2026-02-14', '09:00:00', '12:00:00', 3.00, 'Guided new students during orientation and assisted with registration and directional support.', '2026-04-13 16:19:28', '2026-04-13 16:19:28', NULL, NULL);
+(19, 4, 'Library Orientation Volunteer Team', 'University Service', 'UTAR Library', '2026-02-14', '09:00:00', '12:00:00', 3.00, 'Guided new students during orientation and assisted with registration and directional support.', '2026-04-13 16:19:28', '2026-04-13 16:19:28', NULL, NULL),
+(21, 3, 'Food Donation Packing Day', 'Volunteering', 'Community Service Society', '2026-03-22', '09:00:00', '14:00:00', 5.00, 'Helped sort supplies, pack food items, and coordinate volunteer duties during the donation programme.', '2026-04-14 03:59:06', '2026-04-14 03:59:06', 22, 19),
+(22, 3, 'Intro to Web Development Workshop', 'Committee Work', 'Computer Society', '2026-03-05', '10:00:00', '13:00:00', 3.00, 'Assisted with attendance, projector setup, and lab coordination during the workshop.', '2026-04-14 03:59:06', '2026-04-14 03:59:06', 21, 17),
+(23, 3, 'Badminton Club Weekly Court Setup', 'Club Service', 'Badminton Club', '2026-04-12', '17:30:00', '19:30:00', 2.00, 'Helped arrange courts, prepare equipment, and manage attendance before weekly training.', '2026-04-14 03:59:06', '2026-04-14 03:59:06', NULL, 18),
+(24, 3, 'Library Help Desk Support', 'University Service', 'UTAR Library', '2026-02-18', '09:00:00', '12:30:00', 3.50, 'Assisted students with registration, queue support, and basic help desk guidance.', '2026-04-14 03:59:06', '2026-04-14 03:59:06', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -205,7 +219,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `created_at`, `is_admin`) VALUES
 (2, 'jxuan', 'jxuan04@icloud.com', '$2y$10$SLEtFD3IlpUinbuhbVPy3epiIEaZqb60hly.6wTP75wCz98Z/rmvm', '2026-04-13 13:24:53', 0),
-(3, 'jheen', 'jheen04@gmail.com', '$2y$10$W8Espw9gLorXCj2b6fs9We45jkU5k2q6D6cETQa5vB54YiuZQ0fYa', '2026-04-07 15:40:41', 0),
+(3, 'jheen', 'jheen@icloud.com', '$2y$10$r/DDt/gZBnFXfYEgWOm7BuSlMEl4bzNRmhrzWnL/NvuqVG4FX61S2', '2026-04-14 04:06:00', 0),
 (4, 'admin_jxuan', 'admin@icloud.com', '$2y$10$9hgsbQqTJiZzlfJhalsWiuw1ApvgBY5EhkSUVFxJbO3vaa3WhioVW', '2026-04-07 15:39:23', 1),
 (5, 'acc test', 'acctest@gmail.com', '$2y$10$MSKHeN3glvX1io.R8JcXE.m1vENn1KoY1G091/hHAuOZYGAIr5kd2', '2026-04-07 15:38:47', 0),
 (6, 'zt', 'zt@gmail.com', '$2y$10$b80wJBnhiVtPxLlfoojUJONqC0cHoGMM0z8igjTcgteh800KevL46', '2026-04-08 02:44:55', 0),
@@ -270,31 +284,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `achievements`
 --
 ALTER TABLE `achievements`
-  MODIFY `achievement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `achievement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `clubs`
 --
 ALTER TABLE `clubs`
-  MODIFY `club_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `club_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `merits`
 --
 ALTER TABLE `merits`
-  MODIFY `merit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `merit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `password_resets`
 --
 ALTER TABLE `password_resets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `users`
