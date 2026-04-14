@@ -265,6 +265,49 @@ if ($total_result && mysqli_num_rows($total_result) > 0) {
 
 </div>
 
+<div id="deleteMeritModal" class="delete-modal-overlay">
+    <div class="delete-modal-box">
+        <div class="delete-modal-header">
+            <div class="delete-modal-header-text">
+                <h3>Delete Merit Record</h3>
+                <p>Please review the merit details before deleting it.</p>
+            </div>
+        </div>
+
+        <div class="delete-modal-warning">
+            This action cannot be undone.
+        </div>
+
+        <div class="delete-modal-info">
+            <div class="delete-modal-info-row">
+                <span class="delete-modal-info-label">Activity:</span>
+                <span class="delete-modal-info-value" id="deleteMeritTitle"></span>
+            </div>
+            <div class="delete-modal-info-row">
+                <span class="delete-modal-info-label">Type:</span>
+                <span class="delete-modal-info-value" id="deleteMeritType"></span>
+            </div>
+            <div class="delete-modal-info-row">
+                <span class="delete-modal-info-label">Organizer:</span>
+                <span class="delete-modal-info-value" id="deleteMeritOrganizer"></span>
+            </div>
+            <div class="delete-modal-info-row">
+                <span class="delete-modal-info-label">Date:</span>
+                <span class="delete-modal-info-value" id="deleteMeritDate"></span>
+            </div>
+            <div class="delete-modal-info-row">
+                <span class="delete-modal-info-label">Hours:</span>
+                <span class="delete-modal-info-value" id="deleteMeritHours"></span>
+            </div>
+        </div>
+
+        <div class="delete-modal-actions">
+            <button type="button" class="delete-modal-btn delete-modal-btn-cancel" id="cancelDeleteMerit">Cancel</button>
+            <a href="#" class="delete-modal-btn delete-modal-btn-confirm" id="confirmDeleteMerit">Confirm Delete</a>
+        </div>
+    </div>
+</div>
+
 <script>
     // Custom delete confirmation modal
     document.addEventListener("DOMContentLoaded", function () {

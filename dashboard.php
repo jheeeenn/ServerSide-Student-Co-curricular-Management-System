@@ -157,7 +157,7 @@ include("partials/navbar.php");
                 </div>
             </div>
 
-            <a href="logout.php" class="hero-logout">Logout</a>
+            <!--<a href="logout.php" class="hero-logout">Logout</a> -->
         </div>
     </section>
 

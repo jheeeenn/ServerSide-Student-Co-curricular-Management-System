@@ -133,7 +133,7 @@ include("../partials/navbar.php");
                 <div class="admin-profile-icon">🛡️</div>
                 <div>
                     <strong><?php echo htmlspecialchars($_SESSION['user_name']); ?></strong>
-                    <span>Administrator access</span>
+                    
                 </div>
             </div>
         </div>
