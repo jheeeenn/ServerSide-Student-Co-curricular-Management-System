@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 14, 2026 at 06:06 AM
+-- Generation Time: Apr 16, 2026 at 03:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -55,8 +55,10 @@ INSERT INTO `achievements` (`achievement_id`, `user_id`, `title`, `achievement_t
 (25, 4, 'Dean\'s Co-Curricular Excellence Recognition', 'Award', 'Faculty of ICT', '2026-04-25', 'Recognized for consistent participation and contribution across technical, service, and leadership activities.', '1776139429_1775799956_2.jpg', '2026-04-13 16:19:28', '2026-04-14 04:03:49', NULL),
 (26, 3, 'Certificate of Participation - Campus Photography Walk', 'Certificate', 'Photography Club', '2026-04-06', 'Awarded for active participation and photo submission during the campus photography activity.', '', '2026-04-14 03:59:06', '2026-04-14 03:59:06', 23),
 (27, 3, 'Volunteer Appreciation Award', 'Award', 'Community Service Society', '2026-03-22', 'Recognized for active support and contribution during the Food Donation Packing Day programme.', '', '2026-04-14 03:59:06', '2026-04-14 03:59:06', 22),
-(28, 3, 'Friendly Match Silver Medal', 'Medal', 'Badminton Club', '2026-04-19', 'Received second place recognition in the Interfaculty Badminton Friendly Match.', '1776139282_UCCD3223_OCTOBER2025.pdf', '2026-04-14 03:59:06', '2026-04-14 04:01:22', 24),
-(29, 3, 'Faculty Active Student Recognition', 'Other', 'Faculty of ICT', '2026-05-10', 'Recognized for consistent involvement in co-curricular and student engagement activities throughout the semester.', '1776139262_UCCD3243_OCTOBER2025.pdf', '2026-04-14 03:59:06', '2026-04-14 04:01:02', NULL);
+(29, 3, 'Faculty Active Student Recognition', 'Other', 'Faculty of ICT', '2026-05-10', 'Recognized for consistent involvement in co-curricular and student engagement activities throughout the semester.', '1776329497_1776139429_1775799956_2.jpg', '2026-04-14 03:59:06', '2026-04-16 08:51:37', NULL),
+(30, 3, 'Friendly Match Silver Medal', 'Medal', 'Badminton Club', '2026-04-19', 'Received second place recognition in the Interfaculty Badminton Friendly Match.', '1776330436_2nd.png', '2026-04-16 09:07:16', '2026-04-16 09:07:16', 24),
+(39, 4, 'Badminton Tournament', 'Medal', 'UTAR', '2026-04-30', '2nd Runner', '', '2026-04-16 11:44:13', '2026-04-16 11:58:07', NULL),
+(42, 4, 'Friendly Basketball', 'Medal', 'UTAR', '2026-04-30', 'Champion', '1776341951_basketball champ.png', '2026-04-16 12:19:11', '2026-04-16 12:19:11', 18);
 
 -- --------------------------------------------------------
 
@@ -191,12 +193,7 @@ CREATE TABLE `password_resets` (
 --
 
 INSERT INTO `password_resets` (`id`, `email`, `token`, `created_at`) VALUES
-(1, 'deqerwip@gmail.com', '666b16524ab769c4a289e710549fc100522d7b7a8cc55ecec6c51a2b96e681e0cdba0b7b697214875ec2768288b2229c6c62', '2026-04-12 04:51:25'),
-(2, 'deqerwip@gmail.com', '51170569fa3a053d77943e0131584e4b67074d068eccab6147d403f8806f31f149b64b097f3048fbe4b7bc2232a539f9a5a1', '2026-04-12 04:52:03'),
-(3, 'deqerwip@gmail.com', 'cf11755e28069bee11fabd8f05d435fbb205e119943592e9f68b117fef3717538c8298871f2f1c8f3a7961558a5f5bc5b8e5', '2026-04-12 04:52:12'),
-(4, 'deqerwip@gmail.com', '133a727bdfa6668c1fb3921ff70e4205df972fc952a779b9a2d56c38bfe338b9cf1007d48b3a28c6b9311b4ea98209ced137', '2026-04-12 05:08:12'),
-(5, 'deqerwip@gmail.com', 'e26caa0dde93434264d6b982fb4d36b7bb76fadc3eb71314d842753d2d0951790b242b203dbc28eab246b07edac86de43f08', '2026-04-12 05:08:29'),
-(7, 'gainsongains@gmail.com', '73c2620a4382134bd687b86397a8ff9df74c0356040ff798dda2c9501fa24f9e89ceb71e4312cbddb0586f34f18ea5fbf120', '2026-04-12 05:33:57');
+(1, 'gainsongains@gmail.com', '73c2620a4382134bd687b86397a8ff9df74c0356040ff798dda2c9501fa24f9e89ceb71e4312cbddb0586f34f18ea5fbf120', '2026-04-12 05:33:57');
 
 -- --------------------------------------------------------
 
@@ -252,7 +249,8 @@ ALTER TABLE `clubs`
 --
 ALTER TABLE `events`
   ADD PRIMARY KEY (`event_id`),
-  ADD KEY `club_id` (`club_id`);
+  ADD KEY `club_id` (`club_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `merits`
@@ -284,7 +282,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `achievements`
 --
 ALTER TABLE `achievements`
-  MODIFY `achievement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `achievement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `clubs`
@@ -337,7 +335,8 @@ ALTER TABLE `clubs`
 -- Constraints for table `events`
 --
 ALTER TABLE `events`
-  ADD CONSTRAINT `fk_event_club` FOREIGN KEY (`club_id`) REFERENCES `clubs` (`club_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_event_club` FOREIGN KEY (`club_id`) REFERENCES `clubs` (`club_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_user_event` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `merits`
